@@ -31,6 +31,9 @@ if __name__ == "__main__":
             "$sort" : {
                 "count": -1
             }
+        },
+        {
+            "$limit": 10
         }]
         )
     for doc in docs:
