@@ -17,8 +17,7 @@ if __name__ == "__main__":
         print(f"\tmethod {method}: {count}")
     count = nginx.count_documents({"method": "GET", "path": "/status"})
     print(f"{count} status check")
-
-
+    print("IPs:")
     docs = nginx.aggregate([
         {
             "$group": {
@@ -37,4 +36,4 @@ if __name__ == "__main__":
     for doc in docs:
         ip = doc.get('_id')
         count = doc.get('count')
-        print(f"{ip}: {count}")
+        print(f"\t{ip}: {count}")
