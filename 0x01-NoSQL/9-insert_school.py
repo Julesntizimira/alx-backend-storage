@@ -9,4 +9,5 @@ def insert_school(mongo_collection, **kwargs):
     mongo_collection.insert_one(kwargs)
     key = list(kwargs.keys())[0]
     val = kwargs.get(key)
-    return mongo_collection.find_one({key: val}).get('_id')
+    id = mongo_collection.find_one({key: val}).get('_id')
+    return id
