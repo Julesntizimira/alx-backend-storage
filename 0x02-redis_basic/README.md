@@ -1,1 +1,1 @@
-0x02. Redis basic
+# REDIS HASH TABLE
