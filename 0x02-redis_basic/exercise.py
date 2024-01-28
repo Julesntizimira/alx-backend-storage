@@ -20,7 +20,7 @@ def call_history(method: Callable) -> Callable:
     outputs = key + ":outputs"
 
     @wraps(method)
-    def wrapper_function_history(self, *args, **kwargs):
+    def wrapper(self, *args, **kwargs):
         """
         Wrapper function for the decorated function
         Args:
@@ -35,7 +35,7 @@ def call_history(method: Callable) -> Callable:
         self._redis.rpush(outputs, data)
         return data
     
-    return wrapper_function_history
+    return wrapper
 
 
 def count_calls(method: Callable) -> Callable:
