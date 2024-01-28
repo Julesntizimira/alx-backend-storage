@@ -7,38 +7,6 @@ from functools import wraps
 from typing import Union, Callable, Any
 
 
-'''
-def call_history(method: Callable) -> Callable:
-    """
-    Counts the number of times a function is called
-    Args:
-        method: The function to be decorated
-    Returns:
-        The decorated function
-    """
-    key = method.__qualname__
-    input = key + ":inputs"
-    output = key + ":outputs"
-
-    @wraps(method)
-    def wrapper_function_history(self, *args, **kwargs):
-        """
-        Wrapper function for the decorated function
-        Args:
-            self: The object instance
-            *args: The arguments passed to the function
-            **kwargs: The keyword arguments passed to the function
-        Returns:
-            The return value of the decorated function
-        """
-        self._redis.rpush(input, str(*args))
-        result = method(self, *args, **kwargs)
-        self._redis.rpush(output, result)
-        return result
-    return wrapper_function_history
-'''
-
-
 def call_history(method: Callable) -> Callable:
     """
     Counts the number of times a function is called
@@ -52,7 +20,7 @@ def call_history(method: Callable) -> Callable:
     outputs = key + ":outputs"
 
     @wraps(method)
-    def wrapper(self, *args, **kwargs):
+    def wrapper_function_history(self, *args, **kwargs):
         """
         Wrapper function for the decorated function
         Args:
@@ -62,12 +30,11 @@ def call_history(method: Callable) -> Callable:
         Returns:
             The return value of the decorated function
         """
-        self._redis.rpush(inputs, str(args))
-        data = method(self, *args, **kwargs)
-        self._redis.rpush(outputs, str(data))
-        return data
-
-    return wrapper
+        self._redis.rpush(inputs, str(*args))
+        result = method(self, *args, **kwargs)
+        self._redis.rpush(outputs, result)
+        return result
+    return wrapper_function_history
 
 
 def count_calls(method: Callable) -> Callable:
