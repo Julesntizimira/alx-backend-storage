@@ -8,7 +8,7 @@ from typing import Union, Callable, Any
 
 
 def count_calls(method: Callable) -> Callable:
-    '''decorator function'''
+    '''decorator functionn'''
     @wraps(method)
     def wrapper_function(self, *args, **kwargs):
         '''wrapper method'''
