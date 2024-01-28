@@ -16,7 +16,7 @@ def call_history(method: Callable) -> Callable:
     output = key + ":outputs"
 
     @wraps(method)
-    def wrapper_function_history(self, *args, **kwargs) -> None:
+    def wrapper_function_history(self, *args, **kwargs):
         '''wrapper function
            for call history
         '''
