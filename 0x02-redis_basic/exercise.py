@@ -15,12 +15,8 @@ def count_calls(method: Callable) -> Callable:
     def wrapper_function(self, *args, **kwargs) -> None:
         '''wrapper method
         '''
-        r = redis.Redis()
         key = method.__qualname__
-        if not r.get(key):
-            r.set(key, 1)
-        else:
-            r.incr(key)
+        self._redis.incr(key)
         return method(self, *args, **kwargs)
     return wrapper_function
 
