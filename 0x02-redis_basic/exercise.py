@@ -21,7 +21,7 @@ def replay(method: Callable) -> None:
     for i in range(len(inputs)):
         first = inputs[i].decode('utf-8')
         last = outputs[i].decode('utf-8')
-        print(f"{key}(*({first})) -> {last}")
+        print(f"{key}(*{first}) -> {last}")
 
 
 def call_history(method: Callable) -> Callable:
