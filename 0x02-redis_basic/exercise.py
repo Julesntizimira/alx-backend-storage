@@ -57,3 +57,4 @@ class Cache:
     def get_int(self, data: bytes) -> int:
         '''convert bytes to int'''
         integer_value = int.from_bytes(data, byteorder='little')
+        return integer_value
