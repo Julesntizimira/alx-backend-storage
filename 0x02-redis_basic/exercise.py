@@ -40,7 +40,7 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Callable[[bytes], Any] = None) -> Any:
+    def get(self, key: str, fn: Union[Callable[[bytes], Any], None] = None) -> Any:
         '''convert the data back to the desired format
         '''
         data = self._redis.get(key)
