@@ -13,7 +13,7 @@ def count_calls(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper_function(self, *args, **kwargs) -> None:
-        '''wrapper method 
+        '''wrapper method
         '''
         r = redis.Redis()
         key = method.__qualname__
@@ -42,7 +42,7 @@ class Cache:
         self._redis.set(key, data)
         return key
 
-    def get(self, key: str, fn: Union[Callable[[bytes], Any], None] = None) -> Any:
+    def get(self, key: str, fn: Callable[[bytes], Any] = None) -> Any:
         '''convert the data back to the desired format
         '''
         data = self._redis.get(key)
