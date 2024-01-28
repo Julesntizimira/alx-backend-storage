@@ -3,13 +3,33 @@
 '''
 import redis
 import uuid
+from functools import wraps
 from typing import Union, Callable, Any
 
 
-def count_calls(method: Callable) -> Callable:
-    '''decorator functionn
+def call_history(method: Callable) -> Callable:
+    '''decorator function
+       to log history
     '''
-    from functools import wraps
+
+    @wraps(method)
+    def wrapper_function_history(self, *args) -> None:
+        '''wrapper function
+           for call history
+        '''
+        input = f"{method.__qualname__}:inputs"
+        output = f"{method.__qualname__}:outputs"
+        self._redis.rpush(input, str(*args))
+        result = method(self, *args)
+        self._redis.rpush(output, result)
+        return result
+    return wrapper_function_history
+
+
+def count_calls(method: Callable) -> Callable:
+    '''decorator function
+       to count number of calls
+    '''
 
     @wraps(method)
     def wrapper_function(self, *args, **kwargs) -> None:
@@ -31,6 +51,7 @@ class Cache:
         self._redis.flushdb()
 
     @count_calls
+    @call_history
     def store(self, data: Union[str, bytes, int, float]) -> str:
         '''takes data argument and returns a string
         '''
