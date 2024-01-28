@@ -11,8 +11,9 @@ def call_history(method: Callable) -> Callable:
     '''decorator function
        to log history
     '''
-    input = f"{method.__qualname__}:inputs"
-    output = f"{method.__qualname__}:outputs"
+    key = method.__qualname__
+    input = key + ":inputs"
+    output = key + ":outputs"
 
     @wraps(method)
     def wrapper_function_history(self, *args) -> None:
