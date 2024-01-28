@@ -7,12 +7,14 @@ from typing import Union, Callable, Any
 
 
 def count_calls(method: Callable) -> Callable:
-    '''decorator functionn'''
+    '''decorator functionn
+    '''
     from functools import wraps
 
     @wraps(method)
     def wrapper_function(self, *args, **kwargs) -> None:
-        '''wrapper method'''
+        '''wrapper method 
+        '''
         r = redis.Redis()
         key = method.__qualname__
         if not r.get(key):
