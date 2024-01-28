@@ -3,8 +3,21 @@
 '''
 import redis
 import uuid
+from functools import wraps
 from typing import Union, Callable, Any
 
+
+def count_calls(method: Callable) -> Callable:
+    '''decorator function'''
+    @wraps(method)
+    def wrapper_function(self, *args, **kwargs):
+        '''wrapper method'''
+        if not redis.Redis().get(method.__qualname__):
+            redis.Redis().set(method.__qualname__, 1)
+        else:
+            redis.Redis().incr(method.__qualname__)
+        return method(self, *args, **kwargs)
+    return wrapper_function
 
 class Cache:
     '''class cache
@@ -14,7 +27,8 @@ class Cache:
         '''
         self._redis = redis.Redis()
         self._redis.flushdb()
-
+        
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         '''takes data argument and returns a string
         '''
