@@ -11,14 +11,14 @@ def call_history(method: Callable) -> Callable:
     '''decorator function
        to log history
     '''
+    input = f"{method.__qualname__}:inputs"
+    output = f"{method.__qualname__}:outputs"
 
     @wraps(method)
     def wrapper_function_history(self, *args) -> None:
         '''wrapper function
            for call history
         '''
-        input = f"{method.__qualname__}:inputs"
-        output = f"{method.__qualname__}:outputs"
         self._redis.rpush(input, str(*args))
         result = method(self, *args)
         self._redis.rpush(output, result)
