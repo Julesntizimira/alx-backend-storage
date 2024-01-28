@@ -16,12 +16,12 @@ def call_history(method: Callable) -> Callable:
     output = key + ":outputs"
 
     @wraps(method)
-    def wrapper_function_history(self, *args) -> None:
+    def wrapper_function_history(self, *args, **kwargs) -> None:
         '''wrapper function
            for call history
         '''
         self._redis.rpush(input, str(*args))
-        result = method(self, *args)
+        result = method(self, *args, **kwargs)
         self._redis.rpush(output, result)
         return result
     return wrapper_function_history
