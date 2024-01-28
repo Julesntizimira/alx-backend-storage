@@ -3,19 +3,22 @@
 '''
 import redis
 import uuid
-from functools import wraps
 from typing import Union, Callable, Any
 
 
 def count_calls(method: Callable) -> Callable:
     '''decorator functionn'''
+    from functools import wraps
+
     @wraps(method)
-    def wrapper_function(self, *args, **kwargs):
+    def wrapper_function(self, *args, **kwargs) -> None:
         '''wrapper method'''
-        if not redis.Redis().get(method.__qualname__):
-            redis.Redis().set(method.__qualname__, 1)
+        r = redis.Redis()
+        key = method.__qualname__
+        if not r.get(key):
+            r.set(key, 1)
         else:
-            redis.Redis().incr(method.__qualname__)
+            r.incr(key)
         return method(self, *args, **kwargs)
     return wrapper_function
 
