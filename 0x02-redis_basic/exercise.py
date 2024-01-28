@@ -7,6 +7,23 @@ from functools import wraps
 from typing import Union, Callable, Any
 
 
+def replay(method: Callable) -> None:
+    ''' display the history of calls of a particular function
+    '''
+    r = redis.Redis()
+    key = method.__qualname__
+    input_key = key + ":inputs"
+    output_key = key + ":outputs"
+    calls = r.get(key)
+    inputs = r.lrange(input_key, 0, -1)
+    outputs = r.lrange(output_key, 0, -1)
+    print(f"{key} was called {calls} times:")
+    for i in range(len(inputs)):
+        first = inputs[i].decode('utf-8')
+        last = outputs[i].decode('utf-8')
+        print(f"{key}(*({first})) -> {last}")
+
+
 def call_history(method: Callable) -> Callable:
     """
     Counts the number of times a function is called
