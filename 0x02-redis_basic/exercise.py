@@ -17,10 +17,11 @@ def replay(method: Callable) -> None:
     calls = r.get(key)
     inputs = r.lrange(input_key, 0, -1)
     outputs = r.lrange(output_key, 0, -1)
-    print(f"{key} was called {calls} times:")
-    for i in range(len(inputs)):
-        first = inputs[i].decode('utf-8')
-        last = outputs[i].decode('utf-8')
+    my_list = zip(inputs, outputs)
+    print(f"{key} was called {calls.decode('utf-8')} times:")
+    for tup in my_list:
+        first = tup[0].decode('utf-8')
+        last = tup[1].decode('utf-8')
         print(f"{key}(*{first}) -> {last}")
 
 
