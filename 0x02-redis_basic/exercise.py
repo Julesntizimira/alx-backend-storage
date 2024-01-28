@@ -30,11 +30,11 @@ def call_history(method: Callable) -> Callable:
         Returns:
             The return value of the decorated function
         """
-        self._redis.rpush(inputs, str(*args))
+        self._redis.rpush(inputs, str(args))
         data = method(self, *args, **kwargs)
-        self._redis.rpush(outputs, data)
+        self._redis.rpush(outputs, str(data))
         return data
-    
+
     return wrapper
 
 
